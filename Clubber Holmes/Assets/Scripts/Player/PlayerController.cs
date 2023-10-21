@@ -41,6 +41,10 @@ public class PlayerController : MonoBehaviour
         checkCollisions();
         movePlayer();
     }
+
+    /**
+     * Updates the players position based on movement between frames
+     */
     private void updatePositions()
     {
         Vector3 newPos = new Vector3(player_x, player_y, 0);
@@ -49,6 +53,9 @@ public class PlayerController : MonoBehaviour
         mouse_y = Input.mousePosition.y;
     }
 
+    /**
+     * Performs player movement
+     */
     private void movePlayer()
     {
         float xMovement = playerSpeed * Input.GetAxisRaw("Horizontal");
@@ -71,11 +78,18 @@ public class PlayerController : MonoBehaviour
         player_y += yMovement;
     }
 
+    /**
+     * Change the player's speed
+     * @param speed of player
+     */
     public void setPlayerSpeed(float newSpeed)
     {
         playerSpeed = newSpeed;
     }
 
+    /**
+     * Checks for collisions
+     */
     private void checkCollisions()
     {
         colR = Physics2D.Raycast((Vector2) transform.position, Vector2.right, collisionFilter, collisionHits, collisionDetectionLength) != 0;
@@ -99,6 +113,7 @@ public class PlayerController : MonoBehaviour
             + Physics2D.Raycast((Vector2)transform.position, new Vector2(-2, -1), collisionFilter, collisionHits, collisionDetectionLengthDiagonal)
             + Physics2D.Raycast((Vector2)transform.position, new Vector2(-1, -2), collisionFilter, collisionHits, collisionDetectionLengthDiagonal);
     }
+
 
     private void OnDrawGizmos()
     {
