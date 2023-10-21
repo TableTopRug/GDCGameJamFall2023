@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Xml.Linq;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -39,6 +40,7 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         checkCollisions();
+        rotatePlayer();
         movePlayer();
     }
     private void updatePositions()
@@ -98,6 +100,14 @@ public class PlayerController : MonoBehaviour
             Physics2D.Raycast((Vector2)transform.position, new Vector2(-1, -1), collisionFilter, collisionHits, collisionDetectionLengthDiagonal)
             + Physics2D.Raycast((Vector2)transform.position, new Vector2(-2, -1), collisionFilter, collisionHits, collisionDetectionLengthDiagonal)
             + Physics2D.Raycast((Vector2)transform.position, new Vector2(-1, -2), collisionFilter, collisionHits, collisionDetectionLengthDiagonal);
+    }
+
+    private void rotatePlayer()
+    {
+        Vector2 direction = (Camera.main.ScreenToWorldPoint(Input.mousePosition)-transform.position).normalized;
+        float angle = Mathf.Atan2(direction.x, direction.y) * Mathf.Rad2Deg;
+        Debug.Log(angle);
+        transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
     }
 
     private void OnDrawGizmos()
