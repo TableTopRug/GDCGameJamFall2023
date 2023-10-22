@@ -5,9 +5,11 @@ using UnityEngine;
 public class CombatHandler : MonoBehaviour
 {
     [SerializeField] private Club curClub;
-    [SerializeField] private int maxHealth = 5;
-    [SerializeField] private int health;
     [SerializeField] private float invulnerableTime = 0.5f;
+    [SerializeField] private HealthBar hpBar;
+
+    public int maxHealth = 5;
+    public int health;
     private float invulnerableTimer;
     // Start is called before the first frame update
     void Start()
@@ -35,6 +37,7 @@ public class CombatHandler : MonoBehaviour
         {
             invulnerableTimer = invulnerableTime;
             health--;
+            hpBar.updateHealthBar(health, maxHealth);
             if (health <= 0)
             {
                 //do something
@@ -46,5 +49,6 @@ public class CombatHandler : MonoBehaviour
     {
         health += amount;
         health = Mathf.Min(health, maxHealth);
+        hpBar.updateHealthBar(health, maxHealth);
     }
 }
