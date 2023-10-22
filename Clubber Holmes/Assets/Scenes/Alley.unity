@@ -406,7 +406,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 530224285}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 17087c30e0821844b9bda68a793ca81d, type: 3}
+  m_Script: {fileID: 11500000, guid: 1376fbe268e9048409c8ef95a09cd2a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   width: 20
@@ -417,7 +417,7 @@ MonoBehaviour:
   endingX: 0
   endingY: 0
   tilemap: {fileID: 530224288}
-  buildingTile: {fileID: 11400000, guid: 9321c4b18bae7404a9726360f4f38ef5, type: 2}
+  buildingTile: {fileID: 11400000, guid: 1d6c7442c71b37048aad047a2a598d49, type: 2}
   WitnessProbability: 0.01
 --- !u!1 &1206556127
 GameObject:
