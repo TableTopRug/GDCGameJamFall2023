@@ -139,7 +139,7 @@ GameObject:
   - component: {fileID: 52648176}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -160,6 +160,8 @@ MonoBehaviour:
   playerHitbox: {fileID: 52648176}
   rb: {fileID: 52648174}
   playerSpeed: 10
+  stunTime: 0
+  knockbackForce: 0
 --- !u!212 &52648172
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -270,6 +272,7 @@ MonoBehaviour:
   curClub: {fileID: 1471320045}
   maxHealth: 5
   health: 5
+  invulnerableTime: 0.5
 --- !u!58 &52648176
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -726,7 +729,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 689d7007e70e8fc43b429a4cd15dc6dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerPos: {fileID: 52648173}
   alert: 1
   targetPos: {x: 0, y: 0, z: 0}
   speed: 11
@@ -831,7 +833,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b793d967e04e4224fb8143786c1d4aaf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerPos: {fileID: 52648173}
   alert: 1
   targetPos: {x: 0, y: 0, z: 0}
   speed: 5
@@ -843,6 +844,12 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   desiredDistance: 5
+  attackCD: 1
+  bullet: {fileID: 0}
+  firingSpot: {fileID: 0}
+  blockableLayers:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!212 &1131717375
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -961,6 +968,7 @@ MonoBehaviour:
     m_Bits: 64
   clubCD: 0.5
   knockbackForce: 3
+  stunTime: 0
 --- !u!1 &1675239867
 GameObject:
   m_ObjectHideFlags: 0
