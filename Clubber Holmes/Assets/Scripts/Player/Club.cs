@@ -9,6 +9,7 @@ public class Club : MonoBehaviour
     [SerializeField] private LayerMask hittableLayers;
     [SerializeField] private float clubCD;
     [SerializeField] private float knockbackForce;
+    [SerializeField] private float stunTime;
     private float swingTimer;
 
     private void Start()
@@ -31,11 +32,13 @@ public class Club : MonoBehaviour
         }
     }
     
-    private void clubEffects(GameObject[] objectsHit)
+    public void clubEffects(GameObject[] objectsHit)
     {
         //do special stuff to objects
         for (int i = 0; i < objectsHit.Length; i++)
         {
+            objectsHit[i].gameObject.GetComponent<EnemyBehavior>().stun(stunTime);
+            objectsHit[i].gameObject.GetComponent<EnemyBehavior>().getHit(1);
             Vector2 force = (objectsHit[i].transform.position - playerPos.position).normalized * knockbackForce; 
             Rigidbody2D rb = objectsHit[i].GetComponent<Rigidbody2D>();
             rb.AddForce(force, ForceMode2D.Impulse);

@@ -316,7 +316,7 @@ GameObject:
   - component: {fileID: 179795461}
   - component: {fileID: 179795460}
   - component: {fileID: 179795459}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Wall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -446,7 +446,7 @@ GameObject:
   - component: {fileID: 513182850}
   - component: {fileID: 513182849}
   - component: {fileID: 513182848}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Wall (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -731,6 +731,12 @@ MonoBehaviour:
   targetPos: {x: 0, y: 0, z: 0}
   speed: 11
   rb: {fileID: 1128441419}
+  hitbox: {fileID: 1128441418}
+  canMove: 0
+  health: 3
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 1
 --- !u!1 &1131717371
 GameObject:
   m_ObjectHideFlags: 0
@@ -830,6 +836,12 @@ MonoBehaviour:
   targetPos: {x: 0, y: 0, z: 0}
   speed: 5
   rb: {fileID: 1131717373}
+  hitbox: {fileID: 1131717372}
+  canMove: 0
+  health: 3
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 1
   desiredDistance: 5
 --- !u!212 &1131717375
 SpriteRenderer:
@@ -960,7 +972,7 @@ GameObject:
   - component: {fileID: 1675239870}
   - component: {fileID: 1675239869}
   - component: {fileID: 1675239868}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Wall (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1090,7 +1102,7 @@ GameObject:
   - component: {fileID: 1908960344}
   - component: {fileID: 1908960343}
   - component: {fileID: 1908960342}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Wall (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1220,7 +1232,7 @@ GameObject:
   - component: {fileID: 1953024260}
   - component: {fileID: 1953024259}
   - component: {fileID: 1953024258}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Wall (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}

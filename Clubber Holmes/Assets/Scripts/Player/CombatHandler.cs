@@ -7,6 +7,8 @@ public class CombatHandler : MonoBehaviour
     [SerializeField] private Club curClub;
     [SerializeField] private int maxHealth = 5;
     [SerializeField] private int health;
+    [SerializeField] private float invulnerableTime = 0.5f;
+    private float invulnerableTimer;
     // Start is called before the first frame update
     void Start()
     {
@@ -24,15 +26,19 @@ public class CombatHandler : MonoBehaviour
 
     private void FixedUpdate()
     {
-        
+        invulnerableTimer -= Time.deltaTime;
     }
 
     public void takeDamage()
     {
-        health--;
-        if(health <= 0)
+        if(invulnerableTimer <= 0)
         {
-            //do something
+            invulnerableTimer = invulnerableTime;
+            health--;
+            if (health <= 0)
+            {
+                //do something
+            }
         }
     }
 
