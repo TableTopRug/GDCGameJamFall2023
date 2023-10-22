@@ -8,7 +8,7 @@ using UnityEngine;
 
 public class AlleyMap2 : MonoBehaviour
 {
-    public int width, height;
+    public int width, height, movementAmount;
     public bool[,] tiles;
 
     // Player starting position.
@@ -21,7 +21,6 @@ public class AlleyMap2 : MonoBehaviour
 
     // Tiles
     public RuleTile buildingTile;
-    public RuleTile pathTile;
 
     public float WitnessProbability;
 
@@ -41,22 +40,27 @@ public class AlleyMap2 : MonoBehaviour
         {
             endingX = Rand(width);
             endingY = Rand(height);
-            if (Mathf.Abs(endingX-startingX >= minDiff)) { break; }
-            if (Mathf.Abs(endingY-startingY >= minDiff)) { break; }
+            if (Mathf.Abs(endingX - startingX) >= minDiff) { break; }
+            if (Mathf.Abs(endingY - startingY) >= minDiff) { break; }
         }
 
-        // Fill alley with a specific tile.
-        tilemap.BoxFill(new Vector3Int(0,0,0), buildingTile, startingX, startingY, endingX, endingY);
+        // For all space in grid, put a tile.
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                tilemap.SetTile(new Vector3Int(x, y, 0), buildingTile);
+            }
+        }
 
-
-        // For all spaces between grid, put a tile.
+        // For all spaces between grid, remove tile depending on where there is no tile.
         for (int x = 0; x < width; x++)
         {
             for (int y = 0; y < height; y++)
             {
                 if (tiles[x,y])
                 {
-                    tilemap.SetTile(new Vector3Int(x, y, 0), pathTile);
+                    tilemap.SetTile(new Vector3Int(x, y, 0), null);
                 }
             }
         }
@@ -79,10 +83,10 @@ public class AlleyMap2 : MonoBehaviour
 
             var dirs = new[]
             {
-                (x-1, y, grid, x, y),
-                (x+1, y, grid, x, y),
-                (x, y-1, grid, x, y),
-                (x, y+1, grid, x, y),
+                (x-movementAmount, y, grid, x, y),
+                (x+movementAmount, y, grid, x, y),
+                (x, y-movementAmount, grid, x, y),
+                (x, y+movementAmount, grid, x, y),
             };
 
             foreach (var (nx, ny, g, wx, wy) in dirs.OrderBy(t => frand()))
@@ -92,6 +96,16 @@ public class AlleyMap2 : MonoBehaviour
 
             return true;
         }
+
+        for (int x = 0; x < width; x++ )
+        {
+            tilemap.SetTile(new Vector3Int(x, -1, 0), buildingTile);
+            tilemap.SetTile(new Vector3Int(x, height, 0), buildingTile);
+
+            tilemap.SetTile(new Vector3Int(-1, x, 0), buildingTile);
+            tilemap.SetTile(new Vector3Int(width, x, 0), buildingTile);
+        }
+
 
         dfs(0, 0);
 
