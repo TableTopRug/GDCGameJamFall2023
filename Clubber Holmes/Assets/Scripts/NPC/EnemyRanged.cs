@@ -16,7 +16,8 @@ public class EnemyRanged : EnemyBehavior
     // Start is called before the first frame update
     void Start()
     {
-        
+        playerPos = GameObject.FindGameObjectsWithTag("Player")[0].transform;
+        Debug.Log(playerPos.gameObject.name);
     }
 
     // Update is called once per frame

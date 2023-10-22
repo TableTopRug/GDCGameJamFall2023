@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EnemyBehavior : MonoBehaviour
 {
-    public Transform playerPos;
+    
     public bool alert;
     public Vector3 targetPos;
     public float speed;
@@ -15,6 +15,8 @@ public class EnemyBehavior : MonoBehaviour
     public LayerMask playerLayer;
     private float lazyVal = 0.5f;
     private float stunTimer = 0f;
+    public Transform playerPos;
+
 
     public void rotateToTarget()
     {
@@ -49,7 +51,7 @@ public class EnemyBehavior : MonoBehaviour
     public void getHit(int damage)
     {
         health -= damage;
-        if(health < 0)
+        if(health <= 0)
         {
             Destroy(gameObject);
         }
