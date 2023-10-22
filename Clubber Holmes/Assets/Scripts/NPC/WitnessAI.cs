@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Tilemaps;
+using UnityEngine.UI;
 
 public class WitnessAI : MonoBehaviour
 {
@@ -17,6 +19,9 @@ public class WitnessAI : MonoBehaviour
     private Vector2 currentDirection;
     private ContactFilter2D contactFilter;
     public int curX, curY;
+    public Text elemets;
+    public float fadeIn = 5.0f;
+    public bool isDone = false;
 
 
     // Start is called before the first frame update
@@ -32,7 +37,12 @@ public class WitnessAI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        fadeIn -= Time.deltaTime;
+
+        if (fadeIn <= 0.0f && isDone)
+        {
+            timerEnded();
+        }
     }
 
     private void FixedUpdate()
@@ -216,8 +226,21 @@ public class WitnessAI : MonoBehaviour
     {
         if(collision.gameObject.tag.Equals("Player"))
         {
-            //Fade to black here
+            var list = CafeSceneScript.instance.generateSandwich();
+            var things = "";
+
+            for (int i = 0; i < list.Length; i++)
+            {
+                things += list[i] + "  ";
+            }
+
+            elemets.text = things;
+            isDone = true;
         }
+    }
+    void timerEnded()
+    {
+        SceneManager.LoadScene("MapSelect");
     }
 }
 
