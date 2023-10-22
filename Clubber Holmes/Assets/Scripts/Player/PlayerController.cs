@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Xml.Linq;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -9,48 +11,54 @@ public class PlayerController : MonoBehaviour
     public Transform playerPos;
 
     [SerializeField] private Collider2D playerHitbox;
-    [SerializeField] private LayerMask enemyLayer;
-    [SerializeField] private LayerMask terrainLayer;
-    [SerializeField] private float playerSpeed = 0.25f;
-
-    private float player_x;
-    private float player_y;
-    private float mouse_x;
-    private float mouse_y;
-    
-
+    [SerializeField] private Rigidbody2D rb;
+    [SerializeField] private float playerSpeed = 10f;
+    [SerializeField] private float stunTime;
+    [SerializeField] private float knockbackForce;
+    private float stunTimer;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
     // Update is called once per frame
     void Update()
     {
-   
-        updatePositions();
+        
     }
     private void FixedUpdate()
     {
-        movePlayer();
+        if (stunTimer <= 0)
+        {
+            rotatePlayer();
+            movePlayer();
+        }
+        stunTimer -= Time.deltaTime;
     }
-    private void updatePositions()
+
+    public void knockbackPlayer(Vector3 knockbackPoint)
     {
-        Vector3 newPos = new Vector3(player_x, player_y, 0);
-        playerPos.position = newPos;
-        mouse_x = Input.mousePosition.x;
-        mouse_y = Input.mousePosition.y;
+        //do knockback stuff
+        stunTimer = stunTime;
     }
 
     private void movePlayer()
     {
-        player_x += playerSpeed * Input.GetAxisRaw("Horizontal");
-        player_y += playerSpeed * Input.GetAxisRaw("Vertical");
+        Vector2 inputMovement = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+        rb.velocity = inputMovement.normalized * playerSpeed;
     }
 
     public void setPlayerSpeed(float newSpeed)
     {
         playerSpeed = newSpeed;
     }
+
+    private void rotatePlayer()
+    {
+        Vector2 direction = -(transform.position-Camera.main.ScreenToWorldPoint(Input.mousePosition)).normalized;
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
+    }
+
 }
