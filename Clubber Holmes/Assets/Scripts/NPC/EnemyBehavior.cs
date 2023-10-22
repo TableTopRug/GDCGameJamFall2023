@@ -15,7 +15,7 @@ public class EnemyBehavior : MonoBehaviour
     public LayerMask playerLayer;
     private float lazyVal = 0.5f;
     private float stunTimer = 0f;
-    public Transform playerPos;
+    protected Transform playerPos = null;
 
 
     public void rotateToTarget()

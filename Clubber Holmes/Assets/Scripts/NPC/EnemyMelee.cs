@@ -11,7 +11,6 @@ public class EnemyMelee : EnemyBehavior
     void Start()
     {
         playerPos = GameObject.FindGameObjectsWithTag("Player")[0].transform;
-        Debug.Log(playerPos.gameObject.name);
 
         playerFilter = new ContactFilter2D();
         playerFilter.SetLayerMask(playerLayer);

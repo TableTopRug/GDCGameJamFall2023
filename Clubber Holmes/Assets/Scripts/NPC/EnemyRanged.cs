@@ -17,7 +17,6 @@ public class EnemyRanged : EnemyBehavior
     void Start()
     {
         playerPos = GameObject.FindGameObjectsWithTag("Player")[0].transform;
-        Debug.Log(playerPos.gameObject.name);
     }
 
     // Update is called once per frame
@@ -69,11 +68,5 @@ public class EnemyRanged : EnemyBehavior
             return ((RaycastHit2D) hit).collider.gameObject.tag == "Player";
         }
         return false;
-    }
-
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawRay(firingSpot.position, (transform.position - playerPos.position).normalized * -10f) ;
     }
 }
