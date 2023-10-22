@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class AlleyMap : MonoBehaviour
@@ -26,12 +28,17 @@ public class AlleyMap : MonoBehaviour
         // Clean buildings from map.
         cleanBuildings();
 
+        // Generate alley map. Return bool maps.
         (horizontalBuildings, verticalBuildings) = GenerateAlley(width, height);
+        
+        // Get random starting point.
         startingX = Rand(width);
         startingY = Rand(height);
 
-
+        // Get minimum difference between width and height.
         int minDiff = Mathf.Max(width, height) / 2;
+
+        // While true, try to get random ending point.
         while (true)
         {
             endingX = Rand(width);
@@ -40,6 +47,7 @@ public class AlleyMap : MonoBehaviour
             if (Mathf.Abs(endingY - startingY) >= minDiff) { break; }
         }
 
+        // For all spaces between grid, put a horizontal building.
         for (int x = 0; x < width + 1; x++)
         {
             for (int y = 0; y < height; y++)
@@ -51,9 +59,10 @@ public class AlleyMap : MonoBehaviour
             }
         }
 
+        // For all spaces between grid, put a vertical building.
         for (int x = 0; x < width + 1; x++)
         {
-            for (int y = 0; y < height; y++)
+            for (int y = 0; y < height + 1; y++)
             {
                 if (verticalBuildings[x, y])
                 {
@@ -76,10 +85,11 @@ public class AlleyMap : MonoBehaviour
 
     public (bool[,], bool[,]) GenerateAlley(int w, int h)
     {
-        bool[,] hbuildings = new bool[w, h];
-        bool[,] vbuildings = new bool[w, h];
+        bool[,] hbuildings = new bool[w + 1, h];
+        bool[,] vbuildings = new bool[w, h + 1];
 
         bool[,] visited = new bool[w, h];
+
         bool dfs(int x, int y)
         {
             if (visited[x, y])
@@ -97,7 +107,9 @@ public class AlleyMap : MonoBehaviour
             };
 
             foreach (var (nx, ny, building, wx, wy) in dirs.OrderBy(t => frand()))
-                building[wx, wy] = !(0 <= nx && nx < w && 0 <= ny && ny < h && (dfs(nx, ny) || frand() < WitnessProbability));
+            {
+                    building[wx, wy] = !(0 <= nx && nx < w && 0 <= ny && ny < h && (dfs(nx, ny) || frand() < WitnessProbability));
+            }
 
             return true;
         }

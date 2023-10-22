@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: pixil-frame-0
   m_EditorClassIdentifier: 
   m_Sprite: {fileID: 21300000, guid: a346df69206d2a54a9de17efb47456e3, type: 3}
-  m_Color: {r: 0.24727596, g: 0.246529, b: 0.4716981, a: 1}
+  m_Color: {r: 0.44860613, g: 0.24705882, b: 0.47058824, a: 1}
   m_Transform:
     e00: 1
     e01: 0
