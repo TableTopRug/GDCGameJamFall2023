@@ -39,14 +39,32 @@ public class PlayerController : MonoBehaviour
 
     public void knockbackPlayer(Vector3 knockbackPoint)
     {
-        //do knockback stuff
-        stunTimer = stunTime;
+        Vector3 newPos = new Vector3(player_x, player_y, 0);
+        playerPos.position = newPos;
+        mouse_x = Input.mousePosition.x;
+        mouse_y = Input.mousePosition.y;
     }
 
     private void movePlayer()
     {
-        Vector2 inputMovement = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
-        rb.velocity = inputMovement.normalized * playerSpeed;
+        float xMovement = playerSpeed * Input.GetAxisRaw("Horizontal");
+        float yMovement = playerSpeed * Input.GetAxisRaw("Vertical");
+        if ((xMovement > 0 && (colR || colUR || colDR)) || (xMovement < 0 && (colL || colUL || colDL)))
+        {
+            if(!((colUR && colU && colUL) || (colDR && colDL && colD)))
+            {
+                xMovement = 0;
+            }
+        }
+        if ((yMovement > 0 && (colU || colUR || colUL)) || (yMovement < 0 && ((colD || colDL || colDR))))
+        {
+            if (!((colUR && colR && colDR) || (colUL && colDL && colL)))
+            {
+                yMovement = 0;
+            }
+        }
+        player_x += xMovement;
+        player_y += yMovement;
     }
 
     public void setPlayerSpeed(float newSpeed)
