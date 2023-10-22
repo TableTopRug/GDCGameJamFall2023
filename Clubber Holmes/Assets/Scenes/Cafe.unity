@@ -1178,7 +1178,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   curIngrediants: []
-  selectedIngredients: []
 --- !u!114 &462190115
 MonoBehaviour:
   m_ObjectHideFlags: 0

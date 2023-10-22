@@ -3,15 +3,46 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.VersionControl;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class CafeSceneScript : MonoBehaviour
 {
     public static string[] ingrediants = {"White Bread", "Wheat Bread", "Turkey", "Chicken", "Bacon", "Lettuce", "Tomato", "Egg", "Mustard", "Mayonaise"};
-    public List<string> curIngrediants = new List<string>();
-    public List<string> selectedIngredients = new List<string>();
+    [SerializeField] private List<string> curIngrediants;
+    private List<string> selectedIngredients;
+    public float fadeIn = 5.0f;
+    public bool isDone = false;
 
 
-    public void generateSandwich()
+    void Start()
+    {
+        selectedIngredients = new List<string>();
+
+        if (curIngrediants.Count == 0)
+        {
+            curIngrediants = new List<string>();
+            generateSandwich();
+        }
+    }
+
+    void Update() {
+        fadeIn -= Time.deltaTime;
+
+        if (fadeIn <= 0.0f && isDone)
+        {
+            timerEnded();
+        } else
+        {
+            fadeIn = 10;
+        }
+    }
+
+    void timerEnded()
+    {
+        SceneManager.LoadScene("Menu");
+    }
+
+    public string[] generateSandwich()
     {
         var random = new System.Random();
         var bread = ingrediants[random.Next(0, 2)];
@@ -31,7 +62,9 @@ public class CafeSceneScript : MonoBehaviour
         curIngrediants.Add(mid2);
         curIngrediants.Add(sause);
 
-        Console.WriteLine(curIngrediants.ToArray());
+        Debug.Log(curIngrediants.ToArray().ToString());
+
+        return curIngrediants.ToArray();
     }
 
     public bool checkSandwich()
@@ -39,7 +72,7 @@ public class CafeSceneScript : MonoBehaviour
         if (curIngrediants.Count == selectedIngredients.Count)
         {
             bool[] correct = new bool[4];
-            for (int i = 0; i < curIngrediants.Count; i++)
+            for (int i = 0; i < selectedIngredients.Count; i++)
             {
                 correct[i] = curIngrediants.Contains(selectedIngredients[i]);
             }
@@ -47,34 +80,38 @@ public class CafeSceneScript : MonoBehaviour
             return correct[0] && correct[1] && correct[2] && correct[3];
         }
 
+        Debug.Log(curIngrediants.Count.ToString() + "!=" + selectedIngredients.Count.ToString());
         return false;
     }
 
     public void updateIngrediants(string ing)
     {
-        if (curIngrediants.Contains(ing))
+        if (selectedIngredients.Contains(ing))
         {
             selectedIngredients.Remove(ing);
+            Debug.Log("Remove " + ing);
         }
         else
         {
             selectedIngredients.Add(ing);
+            Debug.Log("Add " + ing);
         }
     }
 
     public void submitOrder()
     {
-        if (checkSandwich())
-        {
-            generateNote(true);
-        } else
-        {
-            generateNote(false);
-        }
+        generateNote(checkSandwich());
     }
 
     public void generateNote(bool correct)
     {
-        Console.WriteLine("Club!");
+        if (!correct)
+        {
+            Debug.Log("Not Club");
+        }
+        else
+        {
+            Debug.Log("Club!");
+        }
     }
 }
