@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -6,18 +5,27 @@ using UnityEngine.Tilemaps;
 public class WitnessAI : MonoBehaviour
 {
     [SerializeField] private Tilemap maze;
+    [SerializeField] private Grid grid;
     [SerializeField] private LayerMask terrainLayer;
     [SerializeField] private float collisionDetectionLength;
-    private int curX, curY;
+    [SerializeField] private float speed;
+    [SerializeField] private float lockoutTime;
+    private float lockoutTimer;
     public bool colL, colR, colU, colD;
-    private bool canMoveL, canMoveR, canMoveU, canMoveD;
     private Vector2 movement;
     private Vector2 currentDirection;
+    private ContactFilter2D contactFilter;
+    public int curX, curY;
+
 
     // Start is called before the first frame update
     void Start()
     {
-        moveWitness(Vector2.up);
+        contactFilter = new ContactFilter2D();
+        contactFilter.SetLayerMask(terrainLayer);
+        currentDirection = Vector2.up;
+        curX = Mathf.RoundToInt(transform.position.x);
+        curY = Mathf.RoundToInt(transform.position.y);
     }
 
     // Update is called once per frame
@@ -29,84 +37,133 @@ public class WitnessAI : MonoBehaviour
     private void FixedUpdate()
     {
         //[L, R, U, D]
+        checkCollisions();
         List<Vector2> availableDirections = new List<Vector2>();
-        if(colL)
+        availableDirections.Add(currentDirection);
+        if (lockoutTimer < 0)
         {
-            if(isCorner(curX + 1, curY + 1))
+            if (currentDirection.Equals(Vector2.left))
             {
-                availableDirections.Add(Vector2.up);
+                if (isCorner(curX, curY))
+                {
+                    availableDirections.Add(Vector2.up);
+                }
+                if (isCorner(curX, curY - 1))
+                {
+                    availableDirections.Add(Vector2.down);
+                }
             }
-            if (isCorner(curX + 1, curY - 1))
+            if (currentDirection.Equals(Vector2.right))
             {
-                availableDirections.Add(Vector2.down);
+                if (isCorner(curX - 1, curY))
+                {
+                    availableDirections.Add(Vector2.up);
+                }
+                if (isCorner(curX - 1, curY - 1))
+                {
+                    availableDirections.Add(Vector2.down);
+                }
             }
+            if (currentDirection.Equals(Vector2.up))
+            {
+                if (isCorner(curX, curY - 1))
+                {
+                    availableDirections.Add(Vector2.right);
+                }
+                if (isCorner(curX - 1, curY - 1))
+                {
+                    availableDirections.Add(Vector2.left);
+                }
+            }
+            if (currentDirection.Equals(Vector2.down))
+            {
+                if (isCorner(curX, curY))
+                {
+                    availableDirections.Add(Vector2.right);
+                }
+                if (isCorner(curX - 1, curY))
+                {
+                    availableDirections.Add(Vector2.left);
+                }
+            }
+            if (colL && currentDirection.Equals(Vector2.left))
+            {
+                availableDirections.Clear();
+                if (isDeadendPiece(curX - 1, curY - 1) && isDeadendPiece(curX - 1, curY))
+                {
+                    availableDirections.Add(currentDirection * -1);
+                } else
+                {
+                    availableDirections.Add(Vector2.right);
+                    availableDirections.Add(Vector2.down);
+                    availableDirections.Add(Vector2.up);
+                    availableDirections.Remove(currentDirection * -1);
+                }
+            }
+            if (colR && currentDirection.Equals(Vector2.right))
+            {
+                availableDirections.Clear();
+                if (colR && isDeadendPiece(curX, curY - 1) && isDeadendPiece(curX, curY))
+                {
+                    availableDirections.Add(currentDirection * -1);
+                } else
+                {
+                    availableDirections.Add(Vector2.left);
+                    availableDirections.Add(Vector2.down);
+                    availableDirections.Add(Vector2.up);
+                    availableDirections.Remove(currentDirection * -1);
+                }
+            }
+            if (colU && currentDirection.Equals(Vector2.up))
+            {
+                availableDirections.Clear();
+                if (colU && isDeadendPiece(curX, curY) && isDeadendPiece(curX - 1, curY))
+                {
+                    availableDirections.Add(currentDirection * -1);
+                } else
+                {
+                    availableDirections.Add(Vector2.left);
+                    availableDirections.Add(Vector2.right);
+                    availableDirections.Add(Vector2.down);
+                    availableDirections.Remove(currentDirection * -1);
+                }
+            }
+            if (colD && currentDirection.Equals(Vector2.down))
+            {
+                availableDirections.Clear();
+                if (colD && isDeadendPiece(curX - 1, curY - 1) && isDeadendPiece(curX, curY - 1))
+                {
+                    availableDirections.Add(currentDirection * -1);
+                } else
+                {
+                    availableDirections.Add(Vector2.left);
+                    availableDirections.Add(Vector2.right);
+                    availableDirections.Add(Vector2.up);
+                    availableDirections.Remove(currentDirection * -1);
+                }
+            }
+            lockoutTimer = lockoutTime;
         }
-        if(colR)
-        {
-            if (isCorner(curX - 1, curY + 1))
-            {
-                availableDirections.Add(Vector2.up);
-            }
-            if (isCorner(curX - 1, curY - 1))
-            {
-                availableDirections.Add(Vector2.down);
-            }
-        }
-        if(colU)
-        {
-            if (isCorner(curX + 1, curY - 1))
-            {
-                availableDirections.Add(Vector2.right);
-            }
-            if (isCorner(curX - 1, curY - 1))
-            {
-                availableDirections.Add(Vector2.left);
-            }
-        }
-        if(colD)
-        {
-            if (isCorner(curX + 1, curY + 1))
-            {
-                availableDirections.Add(Vector2.right);
-            }
-            if (isCorner(curX - 1, curY + 1))
-            {
-                availableDirections.Add(Vector2.left);
-            }
-        }
-        /*for(int i = 0; i< availableDirections.Count; i++)
-        {
-            if (availableDirections[i].Equals(currentDirection))
-            {
-                availableDirections.RemoveAt(i);
-                i--;
-            }
-        }*/
         moveWitness(availableDirections[Random.Range(0, availableDirections.Count)]);
-    }
-
-    private int directionToIntCode(Vector2 direction)
-    {
-        if(direction.Equals(Vector2.left))
-        {
-            return 0;
-        } else if(direction.Equals(Vector2.right))
-        {
-            return 1;
-        } else if(direction.Equals(Vector2.up))
-        {
-            return 2;
-        } else if(direction.Equals(Vector2.down))
-        {
-            return 3;
-        }
-        return -1;
+        lockoutTimer -= Time.deltaTime;
     }
 
     private void moveWitness(Vector2 direction)
     {
-        movement = (Vector2) transform.position + direction;
-        transform.position = movement;
+        movement = direction;
+        if((movement.y > 0 && colU )||(movement.y < 0 && colD))
+        {
+            movement.y = 0;
+        }
+        if((movement.x > 0 && colR)||(movement.x < 0 && colL))
+        {
+            movement.x = 0;
+        }
+        transform.position += (Vector3) movement.normalized * speed;
+
+        curX = Mathf.RoundToInt(transform.position.x);
+        curY = Mathf.RoundToInt(transform.position.y);
+        currentDirection = direction;
     }
 
     private void checkCollisions()
@@ -119,13 +176,39 @@ public class WitnessAI : MonoBehaviour
 
     private bool raycastHit(Vector2 direction)
     {
-        RaycastHit2D? hit = Physics2D.Raycast(transform.position, direction, collisionDetectionLength, terrainLayer);
-        return hit != null;
+        RaycastHit2D[] hits = new RaycastHit2D[1];
+        return 0 != Physics2D.Raycast(transform.position, direction, contactFilter, hits, collisionDetectionLength);
     }
 
     private bool isCorner(int x, int y)
     {
-        string spriteName = maze.GetSprite(new Vector3Int(x, y, 0)).name;
+        Sprite sprite = maze.GetSprite(new Vector3Int(x, y, 0));
+        if (sprite.Equals(null))
+        {
+            return false;
+        }
+        string spriteName = sprite.name;
         return spriteName.EndsWith("_0") || spriteName.EndsWith("_2") || spriteName.EndsWith("_8") || spriteName.EndsWith("_10");
     }
+
+    private bool isDeadendPiece(int x, int y)
+    {
+        Sprite sprite = maze.GetSprite(new Vector3Int(x, y, 0));
+        if(sprite.Equals(null))
+        {
+            return false;
+        }
+        string spriteName = sprite.name;
+        return spriteName.EndsWith("_14") || spriteName.EndsWith("_15") || spriteName.EndsWith("_16") || spriteName.EndsWith("_17");
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawRay(transform.position, Vector2.left * collisionDetectionLength);
+        Gizmos.DrawRay(transform.position, Vector2.right * collisionDetectionLength);
+        Gizmos.DrawRay(transform.position, Vector2.up * collisionDetectionLength);
+        Gizmos.DrawRay(transform.position, Vector2.down * collisionDetectionLength);
+    }
 }
+
