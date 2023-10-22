@@ -100,13 +100,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b793d967e04e4224fb8143786c1d4aaf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerPos: {fileID: 0}
   alert: 1
   targetPos: {x: 0, y: 0, z: 0}
   speed: 5
   rb: {fileID: 3283568515514974225}
   hitbox: {fileID: 1937156103110241600}
-  canMove: 0
+  canMove: 1
   health: 3
   playerLayer:
     serializedVersion: 2
