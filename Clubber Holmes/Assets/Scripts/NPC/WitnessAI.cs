@@ -10,6 +10,7 @@ public class WitnessAI : MonoBehaviour
     [SerializeField] private float collisionDetectionLength;
     [SerializeField] private float speed;
     [SerializeField] private float lockoutTime;
+    [SerializeField] private LayerMask playerLayer;
     private float lockoutTimer;
     public bool colL, colR, colU, colD;
     private Vector2 movement;
@@ -209,6 +210,14 @@ public class WitnessAI : MonoBehaviour
         Gizmos.DrawRay(transform.position, Vector2.right * collisionDetectionLength);
         Gizmos.DrawRay(transform.position, Vector2.up * collisionDetectionLength);
         Gizmos.DrawRay(transform.position, Vector2.down * collisionDetectionLength);
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.gameObject.tag.Equals("Player"))
+        {
+            //Fade to black here
+        }
     }
 }
 
