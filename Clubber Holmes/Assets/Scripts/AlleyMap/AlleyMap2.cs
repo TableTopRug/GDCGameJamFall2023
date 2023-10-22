@@ -64,12 +64,64 @@ public class AlleyMap2 : MonoBehaviour
                 }
             }
         }
+
+        // For all space in grid, put a tile if it has a tile nearby.
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                if (x == startingX || y == startingY || x == endingX || y == endingY)
+                {
+                    continue;
+                }
+
+                if (!tilemap.HasTile(new Vector3Int(x, y, 0)))
+                {
+                    if (tilemap.HasTile(new Vector3Int(x + 1, y, 0)))
+                    {
+                        tilemap.SetTile(new Vector3Int(x, y, 0), buildingTile);
+                    }
+
+                    if (tilemap.HasTile(new Vector3Int(x - 1, y, 0)))
+                    {
+                        tilemap.SetTile(new Vector3Int(x, y, 0), buildingTile);
+                    }
+
+                    if (tilemap.HasTile(new Vector3Int(x, y + 1, 0)))
+                    {
+                        tilemap.SetTile(new Vector3Int(x, y, 0), buildingTile);
+                    }
+
+                    if (tilemap.HasTile(new Vector3Int(x, y - 1, 0)))
+                    {
+                        tilemap.SetTile(new Vector3Int(x, y, 0), buildingTile);
+                    }
+                }
+            }
+        }
+
+        // For all spaces between grid, remove tile depending on where there is no tile.
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                if (!tilemap.HasTile(new Vector3Int(x - 1, y, 0)) && !tilemap.HasTile(new Vector3Int(x + 1, y, 0)))
+                {
+                    tilemap.SetTile(new Vector3Int(x, y, 0), null);
+                }
+
+                if (!tilemap.HasTile(new Vector3Int(x, y - 1, 0)) && !tilemap.HasTile(new Vector3Int(x, y + 1, 0)))
+                {
+                    tilemap.SetTile(new Vector3Int(x, y, 0), null);
+                }
+            }
+        }
     }
 
 
     public bool[,] GenerateAlley(int w, int h)
     {
-        bool[,] grid = new bool[w, h];
+        bool[,] grid = new bool[w+2, h+2];
 
         bool[,] visited = new bool[w, h];
 
@@ -97,13 +149,13 @@ public class AlleyMap2 : MonoBehaviour
             return true;
         }
 
-        for (int x = 0; x < width; x++ )
+        for (int i = 0; i < width; i++ )
         {
-            tilemap.SetTile(new Vector3Int(x, -1, 0), buildingTile);
-            tilemap.SetTile(new Vector3Int(x, height, 0), buildingTile);
+            tilemap.SetTile(new Vector3Int(i, -1, 0), buildingTile);
+            tilemap.SetTile(new Vector3Int(i, height, 0), buildingTile);
 
-            tilemap.SetTile(new Vector3Int(-1, x, 0), buildingTile);
-            tilemap.SetTile(new Vector3Int(width, x, 0), buildingTile);
+            tilemap.SetTile(new Vector3Int(-1, i, 0), buildingTile);
+            tilemap.SetTile(new Vector3Int(width, i, 0), buildingTile);
         }
 
 

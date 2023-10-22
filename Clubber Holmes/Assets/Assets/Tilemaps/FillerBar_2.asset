@@ -12,9 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 13312, guid: 0000000000000000e000000000000000, type: 0}
   m_Name: FillerBar_2
   m_EditorClassIdentifier: 
+<<<<<<< HEAD
+  m_Sprite: {fileID: -384392634, guid: fcec83e6c1bf3094e998469167b063d4, type: 3}
+=======
 
   m_Sprite: {fileID: 368568022, guid: f70aa99882422bc4685a505cde8958a3, type: 3}
 
+>>>>>>> ccf231513abf002c87f012a74e547983381f8340
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Transform:
     e00: 1

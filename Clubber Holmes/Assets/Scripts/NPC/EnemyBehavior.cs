@@ -20,15 +20,21 @@ public class EnemyBehavior : MonoBehaviour
 
     public void rotateToTarget()
     {
-        Vector2 direction = (targetPos - transform.position).normalized;
-        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
+        if(canMove)
+        {
+            Vector2 direction = (targetPos - transform.position).normalized;
+            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+            transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
+        }
     }
     public void rotateToPlayer()
     {
-        Vector2 direction = (playerPos.position - transform.position).normalized;
-        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
+        if(canMove)
+        {
+            Vector2 direction = (playerPos.position - transform.position).normalized;
+            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+            transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
+        }
     }
     public void moveToTarget()
     {
@@ -53,6 +59,8 @@ public class EnemyBehavior : MonoBehaviour
         health -= damage;
         if(health <= 0)
         {
+            //if witness
+            //fade to black etc.
             Destroy(gameObject);
         }
     }
