@@ -8,11 +8,25 @@ using UnityEngine.SceneManagement;
 public class CafeSceneScript : MonoBehaviour
 {
     public static string[] ingrediants = {"White Bread", "Wheat Bread", "Turkey", "Chicken", "Bacon", "Lettuce", "Tomato", "Egg", "Mustard", "Mayonaise"};
+    public static CafeSceneScript instance;
     [SerializeField] private List<string> curIngrediants;
     private List<string> selectedIngredients;
     public float fadeIn = 5.0f;
     public bool isDone = false;
 
+
+    private void Awake()
+    {
+        instance = this;
+        DontDestroyOnLoad(this.gameObject);
+        selectedIngredients = new List<string>();
+
+        if (curIngrediants.Count == 0)
+        {
+            curIngrediants = new List<string>();
+            generateSandwich();
+        }
+    }
 
     void Start()
     {
@@ -31,15 +45,12 @@ public class CafeSceneScript : MonoBehaviour
         if (fadeIn <= 0.0f && isDone)
         {
             timerEnded();
-        } else
-        {
-            fadeIn = 10;
         }
     }
 
     void timerEnded()
     {
-        SceneManager.LoadScene("Menu");
+        SceneManager.LoadScene("MapSelect");
     }
 
     public string[] generateSandwich()
@@ -113,5 +124,8 @@ public class CafeSceneScript : MonoBehaviour
         {
             Debug.Log("Club!");
         }
+
+        fadeIn = 5f;
+        isDone = true;
     }
 }
