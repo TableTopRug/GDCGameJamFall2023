@@ -5,9 +5,19 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
-    public void PlayGame()
+    public void RunAlleys()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        SceneManager.LoadScene("Alley");
+    }
+
+    public void EnterCafe()
+    {
+        SceneManager.LoadScene("Cafe");
+    }
+
+    public void HitTheClub()
+    {
+        SceneManager.LoadScene("Club");
     }
 
     public void QuitGame()
