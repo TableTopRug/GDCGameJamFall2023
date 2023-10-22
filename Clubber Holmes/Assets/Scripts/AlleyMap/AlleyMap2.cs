@@ -41,8 +41,8 @@ public class AlleyMap2 : MonoBehaviour
         {
             endingX = Rand(width);
             endingY = Rand(height);
-            if (Mathf.Abs(endingX-startingX >= minDiff)) { break; }
-            if (Mathf.Abs(endingY-startingY >= minDiff)) { break; }
+            if (Mathf.Abs(endingX-startingX) >= minDiff) { break; }
+            if (Mathf.Abs(endingY-startingY) >= minDiff) { break; }
         }
 
         // Fill alley with a specific tile.
