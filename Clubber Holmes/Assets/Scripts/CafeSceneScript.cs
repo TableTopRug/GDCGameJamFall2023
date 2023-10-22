@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.VersionControl;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class CafeSceneScript : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class CafeSceneScript : MonoBehaviour
     [SerializeField] private List<string> curIngrediants;
     private List<string> selectedIngredients;
     public float fadeIn = 5.0f;
+    public bool isDone = false;
 
 
     void Start()
@@ -26,15 +28,18 @@ public class CafeSceneScript : MonoBehaviour
     void Update() {
         fadeIn -= Time.deltaTime;
 
-        if (fadeIn <= 0.0f)
+        if (fadeIn <= 0.0f && isDone)
         {
             timerEnded();
+        } else
+        {
+            fadeIn = 10;
         }
     }
 
     void timerEnded()
     {
-        //do your stuff here.
+        SceneManager.LoadScene("Menu");
     }
 
     public string[] generateSandwich()
