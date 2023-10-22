@@ -3964,9 +3964,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 530224285}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 17087c30e0821844b9bda68a793ca81d, type: 3}
+  m_Script: {fileID: 11500000, guid: d7aed08db0772f04f92b35af72e759ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  width: 0
+  height: 0
+  startingX: 0
+  startingY: 0
+  endingX: 0
+  endingY: 0
+  tilemap: {fileID: 0}
+  buildingTile: {fileID: 0}
+  pathTile: {fileID: 0}
+  WitnessProbability: 0
 --- !u!1 &1535442918
 GameObject:
   m_ObjectHideFlags: 0
