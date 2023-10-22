@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Xml.Linq;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -10,121 +11,54 @@ public class PlayerController : MonoBehaviour
     public Transform playerPos;
 
     [SerializeField] private Collider2D playerHitbox;
-    [SerializeField] private LayerMask impassableLayers;
-    [SerializeField] private float playerSpeed = 0.25f;
-
-    [SerializeField] private float collisionDetectionLength = 0.55f;
-    [SerializeField] private float collisionDetectionLengthDiagonal = 0.5f;
-
-    private float player_x;
-    private float player_y;
-    private float mouse_x;
-    private float mouse_y;
-
-    public bool colL, colR, colU, colD, colUR, colUL, colDR, colDL;
-    private ContactFilter2D collisionFilter;
-    private RaycastHit2D[] collisionHits;
+    [SerializeField] private Rigidbody2D rb;
+    [SerializeField] private float playerSpeed = 10f;
+    [SerializeField] private float stunTime;
+    [SerializeField] private float knockbackForce;
+    private float stunTimer;
 
     // Start is called before the first frame update
     void Start()
     {
-        collisionFilter.SetLayerMask(impassableLayers);
-        collisionHits = new RaycastHit2D[10];
+
     }
     // Update is called once per frame
     void Update()
     {
-        updatePositions();
+        
     }
     private void FixedUpdate()
     {
-        checkCollisions();
-        movePlayer();
+        if (stunTimer <= 0)
+        {
+            rotatePlayer();
+            movePlayer();
+        }
+        stunTimer -= Time.deltaTime;
     }
 
-    /**
-     * Updates the players position based on movement between frames
-     */
-    private void updatePositions()
+    public void knockbackPlayer(Vector3 knockbackPoint)
     {
-        Vector3 newPos = new Vector3(player_x, player_y, 0);
-        playerPos.position = newPos;
-        mouse_x = Input.mousePosition.x;
-        mouse_y = Input.mousePosition.y;
+        //do knockback stuff
+        stunTimer = stunTime;
     }
 
-    /**
-     * Performs player movement
-     */
     private void movePlayer()
     {
-        float xMovement = playerSpeed * Input.GetAxisRaw("Horizontal");
-        float yMovement = playerSpeed * Input.GetAxisRaw("Vertical");
-        if ((xMovement > 0 && (colR || colUR || colDR)) || (xMovement < 0 && (colL || colUL || colDL)))
-        {
-            if(!((colUR && colU && colUL) || (colDR && colDL && colD)))
-            {
-                xMovement = 0;
-            }
-        }
-        if ((yMovement > 0 && (colU || colUR || colUL)) || (yMovement < 0 && ((colD || colDL || colDR))))
-        {
-            if (!((colUR && colR && colDR) || (colUL && colDL && colL)))
-            {
-                yMovement = 0;
-            }
-        }
-        player_x += xMovement;
-        player_y += yMovement;
+        Vector2 inputMovement = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+        rb.velocity = inputMovement.normalized * playerSpeed;
     }
 
-    /**
-     * Change the player's speed
-     * @param speed of player
-     */
     public void setPlayerSpeed(float newSpeed)
     {
         playerSpeed = newSpeed;
     }
 
-    /**
-     * Checks for collisions
-     */
-    private void checkCollisions()
+    private void rotatePlayer()
     {
-        colR = Physics2D.Raycast((Vector2) transform.position, Vector2.right, collisionFilter, collisionHits, collisionDetectionLength) != 0;
-        colL = Physics2D.Raycast((Vector2)transform.position, Vector2.left, collisionFilter, collisionHits, collisionDetectionLength) != 0;
-        colU = Physics2D.Raycast((Vector2)transform.position, Vector2.up, collisionFilter, collisionHits, collisionDetectionLength) != 0;
-        colD = Physics2D.Raycast((Vector2)transform.position, Vector2.down, collisionFilter, collisionHits, collisionDetectionLength) != 0;
-        colUR = 0 !=
-            Physics2D.Raycast((Vector2)transform.position, new Vector2(1, 1), collisionFilter, collisionHits, collisionDetectionLengthDiagonal)
-            + Physics2D.Raycast((Vector2)transform.position, new Vector2(2, 1), collisionFilter, collisionHits, collisionDetectionLengthDiagonal)
-            + Physics2D.Raycast((Vector2)transform.position, new Vector2(1, 2), collisionFilter, collisionHits, collisionDetectionLengthDiagonal);
-        colUL = 0 !=
-            Physics2D.Raycast((Vector2)transform.position, new Vector2(-1, 1), collisionFilter, collisionHits, collisionDetectionLengthDiagonal)
-            + Physics2D.Raycast((Vector2)transform.position, new Vector2(-2, 1), collisionFilter, collisionHits, collisionDetectionLengthDiagonal)
-            + Physics2D.Raycast((Vector2)transform.position, new Vector2(-1, 2), collisionFilter, collisionHits, collisionDetectionLengthDiagonal);
-        colDR = 0 !=
-            Physics2D.Raycast((Vector2)transform.position, new Vector2(1, -1), collisionFilter, collisionHits, collisionDetectionLengthDiagonal)
-            + Physics2D.Raycast((Vector2)transform.position, new Vector2(2, -1), collisionFilter, collisionHits, collisionDetectionLengthDiagonal)
-            + Physics2D.Raycast((Vector2)transform.position, new Vector2(1, -2), collisionFilter, collisionHits, collisionDetectionLengthDiagonal);
-        colDL = 0 !=
-            Physics2D.Raycast((Vector2)transform.position, new Vector2(-1, -1), collisionFilter, collisionHits, collisionDetectionLengthDiagonal)
-            + Physics2D.Raycast((Vector2)transform.position, new Vector2(-2, -1), collisionFilter, collisionHits, collisionDetectionLengthDiagonal)
-            + Physics2D.Raycast((Vector2)transform.position, new Vector2(-1, -2), collisionFilter, collisionHits, collisionDetectionLengthDiagonal);
+        Vector2 direction = -(transform.position-Camera.main.ScreenToWorldPoint(Input.mousePosition)).normalized;
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
     }
 
-
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.green;
-        Gizmos.DrawRay(transform.position, Vector2.right * collisionDetectionLength);
-        Gizmos.DrawRay(transform.position, Vector2.left * collisionDetectionLength);
-        Gizmos.DrawRay(transform.position, Vector2.up * collisionDetectionLength);
-        Gizmos.DrawRay(transform.position, Vector2.down * collisionDetectionLength);
-        Gizmos.DrawRay(transform.position, new Vector2(Mathf.Sqrt(2)/2, Mathf.Sqrt(2) / 2) * collisionDetectionLengthDiagonal);
-        Gizmos.DrawRay(transform.position, new Vector2(-Mathf.Sqrt(2) / 2, Mathf.Sqrt(2) / 2) * collisionDetectionLengthDiagonal);
-        Gizmos.DrawRay(transform.position, new Vector2(Mathf.Sqrt(2) / 2, -Mathf.Sqrt(2) / 2) * collisionDetectionLengthDiagonal);
-        Gizmos.DrawRay(transform.position, new Vector2(-Mathf.Sqrt(2) / 2, -Mathf.Sqrt(2) / 2) * collisionDetectionLengthDiagonal);
-    }
 }
