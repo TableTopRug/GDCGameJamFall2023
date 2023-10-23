@@ -194,7 +194,7 @@ public class WitnessAI : MonoBehaviour
     private bool isCorner(int x, int y)
     {
         Sprite sprite = maze.GetSprite(new Vector3Int(x, y, 0));
-        if (sprite.Equals(null))
+        if (sprite == null || sprite.Equals(null))
         {
             return false;
         }

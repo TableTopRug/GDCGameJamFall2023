@@ -127,6 +127,10 @@ public class AlleyMap2 : MonoBehaviour
 
         bool dfs(int x, int y)
         {
+            if (x >= w ||  y >= h)
+            {
+                return false;
+            }
             if (visited[x, y])
             {
                 return false;

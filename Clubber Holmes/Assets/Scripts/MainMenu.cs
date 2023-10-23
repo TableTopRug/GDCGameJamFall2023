@@ -5,6 +5,14 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
+    public static MainMenu instance;
+
+    public void Awake()
+    {
+        instance = this;
+        DontDestroyOnLoad(this.gameObject);
+    }
+
     public void RunAlleys()
     {
         SceneManager.LoadScene("Alley");

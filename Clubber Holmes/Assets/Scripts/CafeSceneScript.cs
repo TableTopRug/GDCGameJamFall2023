@@ -50,7 +50,9 @@ public class CafeSceneScript : MonoBehaviour
 
     void timerEnded()
     {
-        SceneManager.LoadScene("MapSelect");
+
+        MainMenu.FindObjectsOfType<Canvas>()[1].gameObject.SetActive(true);
+        SceneManager.LoadScene("Menu");
     }
 
     public string[] generateSandwich()
