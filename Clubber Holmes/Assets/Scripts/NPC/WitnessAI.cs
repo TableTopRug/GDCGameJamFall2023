@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using TMPro;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Tilemaps;
@@ -19,7 +21,7 @@ public class WitnessAI : MonoBehaviour
     private Vector2 currentDirection;
     private ContactFilter2D contactFilter;
     public int curX, curY;
-    public Text elemets;
+    public TextMeshProUGUI elemets;
     public float fadeIn = 5.0f;
     public bool isDone = false;
 
@@ -226,21 +228,33 @@ public class WitnessAI : MonoBehaviour
     {
         if(collision.gameObject.tag.Equals("Player"))
         {
-            var list = CafeSceneScript.instance.generateSandwich();
-            var things = "";
-
-            for (int i = 0; i < list.Length; i++)
-            {
-                things += list[i] + "  ";
+            if (CafeSceneScript.instance == null) {
+                GameObject go = new GameObject("CafeScene");
+                CafeSceneScript.instance = go.AddComponent<CafeSceneScript>();
             }
+            var list = CafeSceneScript.instance.getCurrentIngrediants();
 
-            elemets.text = things;
+            elemets.text = arrayToString(list.ToArray());
+            elemets.gameObject.SetActive(true);
             isDone = true;
+            fadeIn = 7f;
         }
     }
+    public string arrayToString(object[] array)
+    {
+        var str = "[";
+        foreach (object o in array)
+        {
+            str += " " + o.ToString() + ",";
+        }
+        str = str.Substring(0, str.Length - 1) + "]";
+
+        return str;
+    }
+
     void timerEnded()
     {
-        SceneManager.LoadScene("MapSelect");
+        SceneManager.LoadScene("Menu");
     }
 }
 

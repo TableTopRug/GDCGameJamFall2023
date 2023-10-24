@@ -15,14 +15,15 @@ public class CafeSceneScript : MonoBehaviour
     public bool isDone = false;
 
 
-    private void Awake()
+    public void Awake()
     {
         instance = this;
         DontDestroyOnLoad(this.gameObject);
         selectedIngredients = new List<string>();
 
-        if (curIngrediants.Count == 0)
+        if (curIngrediants == null)
         {
+            Debug.Log("Awake!");
             curIngrediants = new List<string>();
             generateSandwich();
         }
@@ -35,6 +36,7 @@ public class CafeSceneScript : MonoBehaviour
         if (curIngrediants.Count == 0)
         {
             curIngrediants = new List<string>();
+            Debug.Log("Start!");
             generateSandwich();
         }
     }
@@ -48,10 +50,13 @@ public class CafeSceneScript : MonoBehaviour
         }
     }
 
+    public List<string> getCurrentIngrediants()
+    {
+        return curIngrediants;
+    }
+
     void timerEnded()
     {
-
-        MainMenu.FindObjectsOfType<Canvas>()[1].gameObject.SetActive(true);
         SceneManager.LoadScene("Menu");
     }
 
@@ -75,9 +80,21 @@ public class CafeSceneScript : MonoBehaviour
         curIngrediants.Add(mid2);
         curIngrediants.Add(sause);
 
-        Debug.Log(curIngrediants.ToArray().ToString());
+        Debug.Log(arrayToString(curIngrediants.ToArray()));
 
         return curIngrediants.ToArray();
+    }
+
+    public string arrayToString(object[] array)
+    {
+        var str = "[";
+        foreach (object o in array)
+        {
+            str += " " + o.ToString() + ",";
+        }
+        str += "\b]";
+
+        return str;
     }
 
     public bool checkSandwich()
