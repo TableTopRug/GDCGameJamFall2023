@@ -1360,7 +1360,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 885848430}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 19bf05a676fa0a242823fd7e16531217, type: 3}
+  m_Script: {fileID: 11500000, guid: cb82a8c7fc229244ab8788bb288a3461, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &894199872
@@ -1773,8 +1773,8 @@ Canvas:
   m_GameObject: {fileID: 1099174938}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
-  m_Camera: {fileID: 0}
+  m_RenderMode: 1
+  m_Camera: {fileID: 977434843}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
@@ -2040,8 +2040,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Quit
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 5302535af1044152a457ed104f1f4b91, type: 2}
-  m_sharedMaterial: {fileID: 2164040, guid: 5302535af1044152a457ed104f1f4b91, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: ad4b5d74416417548a4d06fcf57b0397, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: ad4b5d74416417548a4d06fcf57b0397, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -2230,7 +2230,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4c93691c1680344b8f6f76da8797a09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  volumeSlider: {fileID: 1250528437}
 --- !u!1 &1290148574
 GameObject:
   m_ObjectHideFlags: 0
@@ -3326,8 +3325,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Options
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 5302535af1044152a457ed104f1f4b91, type: 2}
-  m_sharedMaterial: {fileID: 2164040, guid: 5302535af1044152a457ed104f1f4b91, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: ad4b5d74416417548a4d06fcf57b0397, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: ad4b5d74416417548a4d06fcf57b0397, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -3947,8 +3946,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: PLAY
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 5302535af1044152a457ed104f1f4b91, type: 2}
-  m_sharedMaterial: {fileID: 2164040, guid: 5302535af1044152a457ed104f1f4b91, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: ad4b5d74416417548a4d06fcf57b0397, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: ad4b5d74416417548a4d06fcf57b0397, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
