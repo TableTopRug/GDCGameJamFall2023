@@ -25,7 +25,7 @@ public class MainMenu : MonoBehaviour
 
     public void HitTheClub()
     {
-        SceneManager.LoadScene("Club");
+        SceneManager.LoadScene("Beatemup");
     }
 
     public void QuitGame()
