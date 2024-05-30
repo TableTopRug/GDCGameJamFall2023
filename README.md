@@ -6,9 +6,9 @@ In the interest of not braking things, I propose branches are nemes as follows:
 
 	[SceneName]-[IssueName]
 
-You can use the default name for teh branch so long as you add the Scene name first.
-Example:
-	For an issue 0 with teh name Example MainMenu Issue the branch would be
-		"MainMenu-0-example-mainmenu-issue"
+You can use the default name for teh branch so long as you add the Scene name first.<br/>
+Example:<br/>
+&emsp;For an issue 0 with the name Example MainMenu Issue the branch would be:<br/>
+&emsp;&emsp;"MainMenu-0-example-mainmenu-issue"
 
     
