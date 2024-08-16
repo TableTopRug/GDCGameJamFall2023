@@ -33,9 +33,10 @@ public class TestAlleyMap : MonoBehaviour
 
         tiles = GenerateAlley(width, height);
 
-        startingX = Rand(width);
-        startingY = Rand(height);
+        playerStartX = Rand(width);
+        playerStartY = Rand(height);
     }
+
 
     public bool[,] GenerateAlley(int w, int h)
     {
@@ -85,8 +86,6 @@ public class TestAlleyMap : MonoBehaviour
 
         return grid;
     }
-
-
 
     // Return random number.
     private int Rand(int max)
