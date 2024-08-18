@@ -226,4 +226,5 @@ public class AlleyMap2 : MonoBehaviour
  * 2) From lines 88-140, I think I was trying to make sure the maze didn't have holes and missing texture.
  * 3) I think the clear alley was a way to reset the alley generation.
  * 4) Code from lines 66-85 could be merged.
+ * 5) The DFS does not take into consideration the starting and ending points. Next algorithm probably should.
  ***/
